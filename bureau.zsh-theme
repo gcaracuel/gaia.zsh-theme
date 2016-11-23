@@ -15,7 +15,7 @@ BUREAU_THEME_VENV_PROMPT_SUFFIX=" "
 ### RUBY (RVM/RBENV/CHRUBY)
 
 BUREAU_THEME_RUBY_SHOW="${BUREAU_THEME_RUBY_SHOW:-true}"
-BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_bold[red]%}◊ %{$fg_no_bold[red]%}"
+BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_bold[red]%}💎 %{$fg_no_bold[red]%}"
 BUREAU_THEME_RUBY_PROMPT_SUFFIX=" "
 
 ### Git [±master ▾●]
