@@ -76,6 +76,15 @@ bureau_git_status() {
   echo $_STATUS
 }
 
+nvm_prompt_info () {
+        [[ -f "$NVM_DIR/nvm.sh" ]] || return
+        local nvm_prompt
+        nvm_prompt=$(node -v 2>/dev/null)
+        [[ "${nvm_prompt}x" = "x" ]] && return
+        nvm_prompt=${nvm_prompt:1}
+        echo "${ZSH_THEME_NVM_PROMPT_PREFIX}${nvm_prompt}${ZSH_THEME_NVM_PROMPT_SUFFIX}"
+}
+
 bureau_git_prompt () {
   local _branch=$(bureau_git_branch)
   local _status=$(bureau_git_status)
