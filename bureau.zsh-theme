@@ -3,20 +3,26 @@
 ### NVM
 
 BUREAU_THEME_NVM_SHOW="${BUREAU_THEME_NVM_SHOW:-true}"
-ZSH_THEME_NVM_PROMPT_PREFIX="%B⬡%b "
+ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_no_bold[green]%}⬡ %{$fg_bold[cyan]%} "
 ZSH_THEME_NVM_PROMPT_SUFFIX=" "
 
 ### VIRTUALENV
 
 BUREAU_THEME_VENV_SHOW="${BUREAU_THEME_VENV_SHOW:-true}"
-BUREAU_THEME_VENV_PROMPT_PREFIX="%{$fg_bold[green]%}⟆ %{$fg_no_bold[green]%}"
+BUREAU_THEME_VENV_PROMPT_PREFIX="%{$fg_no_bold[green]%}⟆ %{$fg_bold[cyan]%}"
 BUREAU_THEME_VENV_PROMPT_SUFFIX=" "
 
 ### RUBY (RVM/RBENV/CHRUBY)
 
 BUREAU_THEME_RUBY_SHOW="${BUREAU_THEME_RUBY_SHOW:-true}"
-BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_bold[red]%}💎 %{$fg_no_bold[red]%}"
+BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_no_bold[red]%}💎 %{$fg_bold[cyan]%}"
 BUREAU_THEME_RUBY_PROMPT_SUFFIX=" "
+
+### Kubernetes
+BUREAU_THEME_K8S_SHOW="${BUREAU_THEME_K8S_SHOW:-true}"
+KUBE_PS1_BINARY="${KUBE_PS1_BINARY:-/usr/bin/kubectl}"
+KUBE_PS1_PREFIX="%{$fg_no_bold[blue]%}⎈ %{$fg_bold[cyan]%}"
+KUBE_PS1_SUFFIX=" "
 
 ### Git [±master ▾●]
 
@@ -76,6 +82,15 @@ bureau_git_status() {
   echo $_STATUS
 }
 
+k8s_prompt_info () {
+        [[ -f "$KUBE_PS1_BINARY" ]] || return
+        # namespace
+        KUBE_PS1_NAMESPACE=$(${KUBE_PS1_BINARY} config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)
+        # Set namespace to 'default' if it is not defined
+        KUBE_PS1_NAMESPACE="${KUBE_PS1_NAMESPACE:-default}"
+        echo "${KUBE_PS1_PREFIX}${KUBE_PS1_NAMESPACE}${KUBE_PS1_SUFFIX}%{$reset_color%}"
+}
+
 nvm_prompt_info () {
         [[ -f "$NVM_DIR/nvm.sh" ]] || return
         local nvm_prompt
@@ -97,6 +112,11 @@ bureau_git_prompt () {
     _result="$_result$ZSH_THEME_GIT_PROMPT_SUFFIX"
   fi
   echo $_result
+}
+
+bureau_k8s_prompt() {
+  [[ $BUREAU_THEME_K8S_SHOW == false ]] && return
+  echo -n "$(k8s_prompt_info)"
 }
 
 bureau_nvm_prompt() {
@@ -169,7 +189,7 @@ bureau_precmd () {
 
 setopt prompt_subst
 PROMPT='> $_LIBERTY '
-RPROMPT='$(bureau_nvm_prompt)$(bureau_venv_prompt)$(bureau_ruby_prompt)$(bureau_git_prompt)'
+RPROMPT='$(bureau_k8s_prompt)$(bureau_nvm_prompt)$(bureau_venv_prompt)$(bureau_ruby_prompt)$(bureau_git_prompt)'
 
 
 autoload -U add-zsh-hook
