@@ -97,7 +97,7 @@ nvm_prompt_info () {
         nvm_prompt=$(node -v 2>/dev/null)
         [[ "${nvm_prompt}x" = "x" ]] && return
         nvm_prompt=${nvm_prompt:1}
-        echo "${ZSH_THEME_NVM_PROMPT_PREFIX}${nvm_prompt}${ZSH_THEME_NVM_PROMPT_SUFFIX}"
+        echo "${ZSH_THEME_NVM_PROMPT_PREFIX}${nvm_prompt}${ZSH_THEME_NVM_PROMPT_SUFFIX}%{$reset_color%}"
 }
 
 bureau_git_prompt () {
