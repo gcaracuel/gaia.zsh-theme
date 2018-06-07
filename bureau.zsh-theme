@@ -19,7 +19,7 @@ BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_no_bold[red]%}💎 %{$fg_bold[cyan]%}"
 BUREAU_THEME_RUBY_PROMPT_SUFFIX=" "
 
 ### Kubernetes
-BUREAU_THEME_K8S_SHOW="${BUREAU_THEME_K8S_SHOW:-false}"
+BUREAU_THEME_K8S_SHOW="${BUREAU_THEME_K8S_SHOW:-false}" # Disable by default to not waste time
 KUBE_PS1_BINARY="${KUBE_PS1_BINARY:-/usr/bin/kubectl}"
 KUBE_PS1_PREFIX="%{$fg_no_bold[blue]%}⎈ %{$fg_bold[cyan]%}"
 KUBE_PS1_SUFFIX=" "
@@ -83,6 +83,7 @@ bureau_git_status() {
 }
 
 k8s_prompt_info () {
+        [[ $BUREAU_THEME_K8S_SHOW == false ]] && return # Security trigger to save CPU time
         [[ -f "$KUBE_PS1_BINARY" ]] || return
         # namespace
         KUBE_PS1_NAMESPACE=$(${KUBE_PS1_BINARY} config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)
