@@ -19,7 +19,7 @@ BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_no_bold[red]%}💎 %{$fg_bold[cyan]%}"
 BUREAU_THEME_RUBY_PROMPT_SUFFIX=" "
 
 ### Kubernetes
-BUREAU_THEME_K8S_SHOW="${BUREAU_THEME_K8S_SHOW:-true}"
+BUREAU_THEME_K8S_SHOW="${BUREAU_THEME_K8S_SHOW:-false}"
 KUBE_PS1_BINARY="${KUBE_PS1_BINARY:-/usr/bin/kubectl}"
 KUBE_PS1_PREFIX="%{$fg_no_bold[blue]%}⎈ %{$fg_bold[cyan]%}"
 KUBE_PS1_SUFFIX=" "
@@ -119,6 +119,12 @@ bureau_k8s_prompt() {
   echo -n "$(k8s_prompt_info)"
 }
 
+bureau_k8s_aliases() {
+  alias kubeon='BUREAU_THEME_K8S_SHOW=true'
+  alias kubeoff='BUREAU_THEME_K8S_SHOW=false'
+}
+
+
 bureau_nvm_prompt() {
   [[ $BUREAU_THEME_NVM_SHOW == false ]] && return
   echo -n "$(nvm_prompt_info)"
@@ -187,9 +193,12 @@ bureau_precmd () {
   print -rP "$_1LEFT$_1SPACES$_1RIGHT"
 }
 
+# Load aliases
+bureau_k8s_aliases
+
 setopt prompt_subst
 PROMPT='> $_LIBERTY '
-RPROMPT='$(bureau_k8s_prompt)$(bureau_nvm_prompt)$(bureau_venv_prompt)$(bureau_ruby_prompt)$(bureau_git_prompt)'
+RPROMPT='$(bureau_k8s_prompt)$(bureau_nvm_prompt)$(bureau_venv_prompt)$(bureau_ruby_prompt)$(bureau_git_prompt)%{$reset_color%}'
 
 
 autoload -U add-zsh-hook
