@@ -1,20 +1,23 @@
 # oh-my-zsh Bureau Theme
 
 ### NVM
-
-BUREAU_THEME_NVM_SHOW="${BUREAU_THEME_NVM_SHOW:-true}"
-ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_no_bold[green]%}⬡ %{$fg_bold[cyan]%} "
+BUREAU_THEME_NVM_SHOW="${BUREAU_THEME_NVM_SHOW:-false}"
+ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_no_bold[green]%}⬡%{$fg_bold[white]%} "
 ZSH_THEME_NVM_PROMPT_SUFFIX=" "
 
-### VIRTUALENV
+### JAVA version
+BUREAU_THEME_JAVA_SHOW="${BUREAU_THEME_JAVA_SHOW:-false}"
+BUREAU_THEME_JAVA_BINARY="/usr/bin/java"
+BUREAU_THEME_JAVA_PROMPT_PREFIX="%{$fg_no_bold[brown]%}☕%{$fg_bold[white]%}"
+BUREAU_THEME_JAVA_PROMPT_SUFFIX=" "
 
-BUREAU_THEME_VENV_SHOW="${BUREAU_THEME_VENV_SHOW:-true}"
-BUREAU_THEME_VENV_PROMPT_PREFIX="%{$fg_no_bold[green]%}⟆ %{$fg_bold[cyan]%}"
+### VIRTUALENV
+BUREAU_THEME_VENV_SHOW="${BUREAU_THEME_VENV_SHOW:-false}"
+BUREAU_THEME_VENV_PROMPT_PREFIX="%{$fg_no_bold[green]%}⟆%{$fg_bold[white]%}"
 BUREAU_THEME_VENV_PROMPT_SUFFIX=" "
 
 ### RUBY (RVM/RBENV/CHRUBY)
-
-BUREAU_THEME_RUBY_SHOW="${BUREAU_THEME_RUBY_SHOW:-true}"
+BUREAU_THEME_RUBY_SHOW="${BUREAU_THEME_RUBY_SHOW:-false}"
 BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_no_bold[red]%}💎 %{$fg_bold[cyan]%}"
 BUREAU_THEME_RUBY_PROMPT_SUFFIX=" "
 
@@ -25,7 +28,6 @@ KUBE_PS1_PREFIX="%{$fg_no_bold[blue]%}⎈ %{$fg_bold[cyan]%}"
 KUBE_PS1_SUFFIX=" "
 
 ### Git [±master ▾●]
-
 ZSH_THEME_GIT_PROMPT_PREFIX="[%{$fg_bold[green]%}±%{$reset_color%}%{$fg_bold[white]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}]"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✓%{$reset_color%}"
@@ -82,6 +84,12 @@ bureau_git_status() {
   echo $_STATUS
 }
 
+java_prompt_info () {
+        [[ -f "$BUREAU_THEME_JAVA_BINARY" ]] || return
+        JAVA_PROMPT_VERSION=$($BUREAU_THEME_JAVA_BINARY -version 2>&1 | awk -F '"' '/version/ {print $2}')
+        echo "${BUREAU_THEME_JAVA_PROMPT_PREFIX}${JAVA_PROMPT_VERSION}${BUREAU_THEME_JAVA_PROMPT_SUFFIX}%{$reset_color%}"
+}
+
 k8s_prompt_info () {
         [[ $BUREAU_THEME_K8S_SHOW == false ]] && return # Security trigger to save CPU time
         [[ -f "$KUBE_PS1_BINARY" ]] || return
@@ -115,6 +123,11 @@ bureau_git_prompt () {
   echo $_result
 }
 
+bureau_java_prompt() {
+  [[ $BUREAU_THEME_JAVA_SHOW == false ]] && return
+  echo -n "$(java_prompt_info)"
+}
+
 bureau_k8s_prompt() {
   [[ $BUREAU_THEME_K8S_SHOW == false ]] && return
   echo -n "$(k8s_prompt_info)"
@@ -124,7 +137,6 @@ bureau_k8s_aliases() {
   alias kubeon='BUREAU_THEME_K8S_SHOW=true'
   alias kubeoff='BUREAU_THEME_K8S_SHOW=false'
 }
-
 
 bureau_nvm_prompt() {
   [[ $BUREAU_THEME_NVM_SHOW == false ]] && return
@@ -199,7 +211,7 @@ bureau_k8s_aliases
 
 setopt prompt_subst
 PROMPT='> $_LIBERTY '
-RPROMPT='$(bureau_k8s_prompt)$(bureau_nvm_prompt)$(bureau_venv_prompt)$(bureau_ruby_prompt)$(bureau_git_prompt)%{$reset_color%}'
+RPROMPT='$(bureau_k8s_prompt)$(bureau_java_prompt)$(bureau_nvm_prompt)$(bureau_venv_prompt)$(bureau_ruby_prompt)$(bureau_git_prompt)%{$reset_color%}'
 
 
 autoload -U add-zsh-hook
