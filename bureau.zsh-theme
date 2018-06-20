@@ -2,7 +2,7 @@
 
 ### NVM
 BUREAU_THEME_NVM_SHOW="${BUREAU_THEME_NVM_SHOW:-false}"
-ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_no_bold[green]%}⬡%{$fg_bold[white]%} "
+ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_no_bold[green]%}⬡%{$fg_bold[white]%}"
 ZSH_THEME_NVM_PROMPT_SUFFIX=" "
 
 ### JAVA version
