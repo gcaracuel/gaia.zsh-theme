@@ -2,29 +2,29 @@
 
 ### NVM
 BUREAU_THEME_NVM_SHOW="${BUREAU_THEME_NVM_SHOW:-false}"
-ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_no_bold[green]%}⬡%{$fg_bold[white]%}"
+ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_no_bold[green]%}\ue718 %{$fg_no_bold[white]%}"
 ZSH_THEME_NVM_PROMPT_SUFFIX=" "
 
 ### JAVA version
 BUREAU_THEME_JAVA_SHOW="${BUREAU_THEME_JAVA_SHOW:-false}"
 BUREAU_THEME_JAVA_BINARY="/usr/bin/java"
-BUREAU_THEME_JAVA_PROMPT_PREFIX="%{$fg_no_bold[brown]%}☕%{$fg_bold[white]%}"
+BUREAU_THEME_JAVA_PROMPT_PREFIX="%{$fg_no_bold[white]%}\ue256 %{$fg_no_bold[white]%}"
 BUREAU_THEME_JAVA_PROMPT_SUFFIX=" "
 
 ### VIRTUALENV
 BUREAU_THEME_VENV_SHOW="${BUREAU_THEME_VENV_SHOW:-false}"
-BUREAU_THEME_VENV_PROMPT_PREFIX="%{$fg_no_bold[green]%}⟆%{$fg_bold[white]%}"
+BUREAU_THEME_VENV_PROMPT_PREFIX="%{$fg_no_bold[green]%}\ue235 %{$fg_no_bold[white]%}"
 BUREAU_THEME_VENV_PROMPT_SUFFIX=" "
 
 ### RUBY (RVM/RBENV/CHRUBY)
 BUREAU_THEME_RUBY_SHOW="${BUREAU_THEME_RUBY_SHOW:-false}"
-BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_no_bold[red]%}💎 %{$fg_bold[cyan]%}"
+BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_no_bold[red]%}\ue791 %{$fg_no_bold[white]%}"
 BUREAU_THEME_RUBY_PROMPT_SUFFIX=" "
 
 ### Kubernetes
 BUREAU_THEME_K8S_SHOW="${BUREAU_THEME_K8S_SHOW:-false}" # Disable by default to not waste time
 KUBE_PS1_BINARY="${KUBE_PS1_BINARY:-/usr/bin/kubectl}"
-KUBE_PS1_PREFIX="%{$fg_no_bold[blue]%}⎈ %{$fg_bold[cyan]%}"
+KUBE_PS1_PREFIX="%{$fg_no_bold[blue]%}⎈ %{$fg_no_bold[white]%}"
 KUBE_PS1_SUFFIX=" "
 
 ### Git [±master ▾●]
@@ -93,11 +93,13 @@ java_prompt_info () {
 k8s_prompt_info () {
         [[ $BUREAU_THEME_K8S_SHOW == false ]] && return # Security trigger to save CPU time
         [[ -f "$KUBE_PS1_BINARY" ]] || return
+        # cluster
+        KUBE_PS1_CLUSTER=$(${KUBE_PS1_BINARY} config get-contexts --output=name 2>/dev/null)
         # namespace
         KUBE_PS1_NAMESPACE=$(${KUBE_PS1_BINARY} config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)
         # Set namespace to 'default' if it is not defined
         KUBE_PS1_NAMESPACE="${KUBE_PS1_NAMESPACE:-default}"
-        echo "${KUBE_PS1_PREFIX}${KUBE_PS1_NAMESPACE}${KUBE_PS1_SUFFIX}%{$reset_color%}"
+        echo "${KUBE_PS1_PREFIX}${KUBE_PS1_CLUSTER}/${KUBE_PS1_NAMESPACE}${KUBE_PS1_SUFFIX}%{$reset_color%}"
 }
 
 nvm_prompt_info () {
