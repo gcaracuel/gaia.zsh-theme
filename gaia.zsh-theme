@@ -1,28 +1,40 @@
-# oh-my-zsh Bureau Theme
+# oh-my-zsh Gaia Theme
+# 
+# This theme is used in a environemtn where multiple Java, NodeJS, Python virtualenvs and multiple Kubernetes cluster is managed, using diff version so to have a clear picture on you current version you will have them in screen.
+# For most of the users just Python virtualenv and Kubernetes PROMPT integrayion will make sense.
+#
+# Git prompt is always active.
+# Feature flags:
+#   GAIA_THEME_NVM_SHOW=true|false to enable display/hide nvm active version
+#   GAIA_THEME_JAVA_SHOW=true|false to enable display/hide java version
+#   GAIA_THEME_VENV_SHOW=true|false to enable display/hide Python virtualenv active environment
+#   GAIA_THEME_RUBY_SHOW=true|false to enable display/hide ruby active version
+#   GAIA_THEME_K8S_SHOW=true|false to enable display/hide Kubernetes active cluster and namespace (kubectx nd kubenv required)
+#
 
 ### NVM
-BUREAU_THEME_NVM_SHOW="${BUREAU_THEME_NVM_SHOW:-false}"
+GAIA_THEME_NVM_SHOW="${GAIA_THEME_NVM_SHOW:-false}"
 ZSH_THEME_NVM_PROMPT_PREFIX="%{$fg_no_bold[green]%}\ue718 %{$fg_no_bold[white]%}"
 ZSH_THEME_NVM_PROMPT_SUFFIX=" "
 
 ### JAVA version
-BUREAU_THEME_JAVA_SHOW="${BUREAU_THEME_JAVA_SHOW:-false}"
-BUREAU_THEME_JAVA_BINARY="/usr/bin/java"
-BUREAU_THEME_JAVA_PROMPT_PREFIX="%{$fg_no_bold[white]%}\ue256 %{$fg_no_bold[white]%}"
-BUREAU_THEME_JAVA_PROMPT_SUFFIX=" "
+GAIA_THEME_JAVA_SHOW="${GAIA_THEME_JAVA_SHOW:-false}"
+GAIA_THEME_JAVA_BINARY="/usr/bin/java"
+GAIA_THEME_JAVA_PROMPT_PREFIX="%{$fg_no_bold[white]%}\ue256 %{$fg_no_bold[white]%}"
+GAIA_THEME_JAVA_PROMPT_SUFFIX=" "
 
 ### VIRTUALENV
-BUREAU_THEME_VENV_SHOW="${BUREAU_THEME_VENV_SHOW:-false}"
-BUREAU_THEME_VENV_PROMPT_PREFIX="%{$fg_no_bold[green]%}\ue235 %{$fg_no_bold[white]%}"
-BUREAU_THEME_VENV_PROMPT_SUFFIX=" "
+GAIA_THEME_VENV_SHOW="${GAIA_THEME_VENV_SHOW:-false}"
+GAIA_THEME_VENV_PROMPT_PREFIX="%{$fg_no_bold[green]%}\ue235 %{$fg_no_bold[white]%}"
+GAIA_THEME_VENV_PROMPT_SUFFIX=" "
 
 ### RUBY (RVM/RBENV/CHRUBY)
-BUREAU_THEME_RUBY_SHOW="${BUREAU_THEME_RUBY_SHOW:-false}"
-BUREAU_THEME_RUBY_PROMPT_PREFIX="%{$fg_no_bold[red]%}\ue791 %{$fg_no_bold[white]%}"
-BUREAU_THEME_RUBY_PROMPT_SUFFIX=" "
+GAIA_THEME_RUBY_SHOW="${GAIA_THEME_RUBY_SHOW:-false}"
+GAIA_THEME_RUBY_PROMPT_PREFIX="%{$fg_no_bold[red]%}\ue791 %{$fg_no_bold[white]%}"
+GAIA_THEME_RUBY_PROMPT_SUFFIX=" "
 
 ### Kubernetes
-BUREAU_THEME_K8S_SHOW="${BUREAU_THEME_K8S_SHOW:-false}" # Disable by default to not waste time
+GAIA_THEME_K8S_SHOW="${GAIA_THEME_K8S_SHOW:-false}"
 KUBE_PS1_BINARY="${KUBE_PS1_BINARY:-/usr/bin/kubectl}"
 KUBE_PS1_PREFIX="%{$fg_no_bold[blue]%}⎈ %{$fg_no_bold[white]%}"
 KUBE_PS1_SUFFIX=" "
@@ -37,13 +49,13 @@ ZSH_THEME_GIT_PROMPT_STAGED="%{$fg_bold[green]%}●%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg_bold[yellow]%}●%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg_bold[red]%}●%{$reset_color%}"
 
-bureau_git_branch () {
+gaia_git_branch () {
   ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
   ref=$(command git rev-parse --short HEAD 2> /dev/null) || return
   echo "${ref#refs/heads/}"
 }
 
-bureau_git_status() {
+gaia_git_status() {
   _STATUS=""
 
   # check status of files
@@ -85,13 +97,13 @@ bureau_git_status() {
 }
 
 java_prompt_info () {
-        [[ -f "$BUREAU_THEME_JAVA_BINARY" ]] || return
-        JAVA_PROMPT_VERSION=$($BUREAU_THEME_JAVA_BINARY -version 2>&1 | awk -F '"' '/version/ {print $2}')
-        echo "${BUREAU_THEME_JAVA_PROMPT_PREFIX}${JAVA_PROMPT_VERSION}${BUREAU_THEME_JAVA_PROMPT_SUFFIX}%{$reset_color%}"
+        [[ -f "$GAIA_THEME_JAVA_BINARY" ]] || return
+        JAVA_PROMPT_VERSION=$($GAIA_THEME_JAVA_BINARY -version 2>&1 | awk -F '"' '/version/ {print $2}')
+        echo "${GAIA_THEME_JAVA_PROMPT_PREFIX}${JAVA_PROMPT_VERSION}${GAIA_THEME_JAVA_PROMPT_SUFFIX}%{$reset_color%}"
 }
 
 k8s_prompt_info () {
-        [[ $BUREAU_THEME_K8S_SHOW == false ]] && return # Security trigger to save CPU time
+        [[ $GAIA_THEME_K8S_SHOW == false ]] && return # Security trigger to save CPU time
         [[ -f "$KUBE_PS1_BINARY" ]] || return
         # cluster
         KUBE_PS1_CLUSTER=$(${KUBE_PS1_BINARY} config get-contexts --output=name 2>/dev/null)
@@ -111,9 +123,9 @@ nvm_prompt_info () {
         echo "${ZSH_THEME_NVM_PROMPT_PREFIX}${nvm_prompt}${ZSH_THEME_NVM_PROMPT_SUFFIX}%{$reset_color%}"
 }
 
-bureau_git_prompt () {
-  local _branch=$(bureau_git_branch)
-  local _status=$(bureau_git_status)
+gaia_git_prompt () {
+  local _branch=$(gaia_git_branch)
+  local _status=$(gaia_git_status)
   local _result=""
   if [[ "${_branch}x" != "x" ]]; then
     _result="$ZSH_THEME_GIT_PROMPT_PREFIX$_branch"
@@ -125,36 +137,36 @@ bureau_git_prompt () {
   echo $_result
 }
 
-bureau_java_prompt() {
-  [[ $BUREAU_THEME_JAVA_SHOW == false ]] && return
+gaia_java_prompt() {
+  [[ $GAIA_THEME_JAVA_SHOW == false ]] && return
   echo -n "$(java_prompt_info)"
 }
 
-bureau_k8s_prompt() {
-  [[ $BUREAU_THEME_K8S_SHOW == false ]] && return
+gaia_k8s_prompt() {
+  [[ $GAIA_THEME_K8S_SHOW == false ]] && return
   echo -n "$(k8s_prompt_info)"
 }
 
-bureau_k8s_aliases() {
-  alias kubeon='BUREAU_THEME_K8S_SHOW=true'
-  alias kubeoff='BUREAU_THEME_K8S_SHOW=false'
+gaia_k8s_aliases() {
+  alias kubeon='GAIA_THEME_K8S_SHOW=true'
+  alias kubeoff='GAIA_THEME_K8S_SHOW=false'
 }
 
-bureau_nvm_prompt() {
-  [[ $BUREAU_THEME_NVM_SHOW == false ]] && return
+gaia_nvm_prompt() {
+  [[ $GAIA_THEME_NVM_SHOW == false ]] && return
   echo -n "$(nvm_prompt_info)"
 }
 
-bureau_venv_prompt() {
-  [[ $BUREAU_THEME_VENV_SHOW == false ]] && return
+gaia_venv_prompt() {
+  [[ $GAIA_THEME_VENV_SHOW == false ]] && return
 
   # Check if the current directory running via Virtualenv
   [ -n "$VIRTUAL_ENV" ] && $(type deactivate >/dev/null 2>&1) || return
-  echo -n "${BUREAU_THEME_VENV_PROMPT_PREFIX}$(basename $VIRTUAL_ENV)${BUREAU_THEME_VENV_PROMPT_SUFFIX}%{$reset_color%}"
+  echo -n "${GAIA_THEME_VENV_PROMPT_PREFIX}$(basename $VIRTUAL_ENV)${GAIA_THEME_VENV_PROMPT_SUFFIX}%{$reset_color%}"
 }
 
-bureau_ruby_prompt() {
-  [[ $BUREAU_THEME_RUBY_SHOW == false ]] && return
+gaia_ruby_prompt() {
+  [[ $GAIA_THEME_RUBY_SHOW == false ]] && return
 
   if command -v rvm-prompt > /dev/null 2>&1; then
     if rvm gemset list | grep "=> (default)" > /dev/null 2>&1; then
@@ -167,7 +179,7 @@ bureau_ruby_prompt() {
   else
     return
   fi
-  echo -n "${BUREAU_THEME_RUBY_PROMPT_PREFIX}${ruby_version}${BUREAU_THEME_RUBY_PROMPT_SUFFIX}%{$reset_color%}"
+  echo -n "${GAIA_THEME_RUBY_PROMPT_PREFIX}${ruby_version}${GAIA_THEME_RUBY_PROMPT_SUFFIX}%{$reset_color%}"
 }
 
 
@@ -202,19 +214,19 @@ get_space () {
 _1LEFT="$_USERNAME $_PATH"
 _1RIGHT="[%*] "
 
-bureau_precmd () {
+gaia_precmd () {
   _1SPACES=`get_space $_1LEFT $_1RIGHT`
   print
   print -rP "$_1LEFT$_1SPACES$_1RIGHT"
 }
 
 # Load aliases
-bureau_k8s_aliases
+gaia_k8s_aliases
 
 setopt prompt_subst
 PROMPT='> $_LIBERTY '
-RPROMPT='$(bureau_k8s_prompt)$(bureau_java_prompt)$(bureau_nvm_prompt)$(bureau_venv_prompt)$(bureau_ruby_prompt)$(bureau_git_prompt)%{$reset_color%}'
+RPROMPT='$(gaia_k8s_prompt)$(gaia_java_prompt)$(gaia_nvm_prompt)$(gaia_venv_prompt)$(gaia_ruby_prompt)$(gaia_git_prompt)%{$reset_color%}'
 
 
 autoload -U add-zsh-hook
-add-zsh-hook precmd bureau_precmd
+add-zsh-hook precmd gaia_precmd
