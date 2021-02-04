@@ -19,7 +19,7 @@ Of course git status fully integrated too
 
 - [virtualenv](https://virtualenv.pypa.io/) & virtualenvwrapper
 - [kubectx](https://github.com/ahmetb/kubectx
-- Recomended: [nerd-fonts](https://www.nerdfonts.com/)
+- Recomended: [nerd-fonts](https://www.nerdfonts.com/). Set a nerd font in your terminal for non ASCII chars.
 
 ### Configuration
 
