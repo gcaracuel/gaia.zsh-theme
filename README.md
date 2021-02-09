@@ -9,7 +9,7 @@ Using Gaia you will have always in front of your eyes:
 * Java version 
 * Ruby version
 
-Recommende font: **Hack Nerd Font**
+Recomended font: **Hack Nerd Font**
 
 Of course git status fully integrated too
 
