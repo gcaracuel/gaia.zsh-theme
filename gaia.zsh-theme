@@ -9,7 +9,7 @@
 #   GAIA_THEME_JAVA_SHOW=true|false to enable display/hide java version
 #   GAIA_THEME_VENV_SHOW=true|false to enable display/hide Python virtualenv active environment
 #   GAIA_THEME_RUBY_SHOW=true|false to enable display/hide ruby active version
-#   GAIA_THEME_K8S_SHOW=true|false to enable display/hide Kubernetes active cluster and namespace (kubectx nd kubenv required)
+#   GAIA_THEME_K8S_SHOW=true|false to enable display/hide Kubernetes active cluster and namespace
 #
 
 ### NVM
@@ -106,7 +106,7 @@ k8s_prompt_info () {
         [[ $GAIA_THEME_K8S_SHOW == false ]] && return # Security trigger to save CPU time
         [[ -f "$KUBE_PS1_BINARY" ]] || return
         # cluster
-        KUBE_PS1_CLUSTER=$(${KUBE_PS1_BINARY} config get-contexts --output=name 2>/dev/null)
+        KUBE_PS1_CLUSTER=$(${KUBE_PS1_BINARY} config current-context 2>/dev/null)
         # namespace
         KUBE_PS1_NAMESPACE=$(${KUBE_PS1_BINARY} config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)
         # Set namespace to 'default' if it is not defined

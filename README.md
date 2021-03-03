@@ -4,7 +4,7 @@ A ZSH theme inspired by [bureau](https://github.com/isqua/bureau) & [bureau-env]
 
 Using Gaia you will have always in front of your eyes:
 * Python virtualenv active
-* Kubernetes active cluster and namespace (via [kubectx](https://github.com/ahmetb/kubectx))
+* Kubernetes active cluster and namespace
 * Ruby version and environment
 * Java version 
 * Ruby version
@@ -20,14 +20,14 @@ Of course git status fully integrated too
 ### Requirements
 
 - [virtualenv](https://virtualenv.pypa.io/) & virtualenvwrapper
-- [kubectx](https://github.com/ahmetb/kubectx
+- Recomended: [kubectx](https://github.com/ahmetb/kubectx
 - Recomended: [nerd-fonts](https://www.nerdfonts.com/). Set a nerd font in your terminal for non ASCII chars.
 
 ### Configuration
 
 - GAIA_THEME_NVM_SHOW=true|false to enable display/hide nvm active version
 - GAIA_THEME_JAVA_SHOW=true|false to enable display/hide java version
--  GAIA_THEME_VENV_SHOW=true|false to enable display/hide Python virtualenv active environment
+- GAIA_THEME_VENV_SHOW=true|false to enable display/hide Python virtualenv active environment
 - GAIA_THEME_RUBY_SHOW=true|false to enable display/hide ruby active version
 - GAIA_THEME_K8S_SHOW=true|false to enable display/hide Kubernetes active cluster and namespace (kubectx nd kubenv required)
 
