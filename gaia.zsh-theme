@@ -10,6 +10,8 @@
 #   GAIA_THEME_VENV_SHOW=true|false to enable display/hide Python virtualenv active environment
 #   GAIA_THEME_RUBY_SHOW=true|false to enable display/hide ruby active version
 #   GAIA_THEME_K8S_SHOW=true|false to enable display/hide Kubernetes active cluster and namespace
+#   GAIA_THEME_TF_SHOW=true|false to enable display/hide Terraform active workspace. Logo of Terraform not yet at Hack Fonts so we will use a bridge
+#   GAIA_THEME_GCP_SHOW=true|false to enable display/hide Google Cloud active configuration. Use 'gcloud config ocnfigurations' to get more details
 #
 
 ### NVM
@@ -38,6 +40,18 @@ GAIA_THEME_K8S_SHOW="${GAIA_THEME_K8S_SHOW:-false}"
 KUBE_PS1_BINARY="${KUBE_PS1_BINARY:-/usr/bin/kubectl}"
 KUBE_PS1_PREFIX="%{$fg_no_bold[blue]%}⎈ %{$fg_no_bold[white]%}"
 KUBE_PS1_SUFFIX=" "
+
+### Google Cloud
+GAIA_THEME_K8S_SHOW="${GAIA_THEME_GCP_SHOW:-false}"
+GCP_PS1_BINARY="${GCP_PS1_BINARY:-/usr/local/bin/gcloud}"
+GCP_PS1_PREFIX="%{$fg_no_bold[white]%}\ue7b2 %{$fg_no_bold[white]%}"
+GCP_PS1_SUFFIX=" "
+
+### Terraform
+GAIA_THEME_TF_SHOW="${GAIA_THEME_TF_SHOW:-false}"
+TF_PS1_BINARY="${TF_PS1_BINARY:-/usr/local/bin/terraform}"
+TF_PS1_PREFIX="%{$fg_no_bold[cyan]%}\ufb17 %{$fg_no_bold[cyan]%}"
+TF_PS1_SUFFIX=" "
 
 ### Git [±master ▾●]
 ZSH_THEME_GIT_PROMPT_PREFIX="[%{$fg_bold[green]%}±%{$reset_color%}%{$fg_bold[white]%}"
@@ -114,6 +128,22 @@ k8s_prompt_info () {
         echo "${KUBE_PS1_PREFIX}${KUBE_PS1_CLUSTER}/${KUBE_PS1_NAMESPACE}${KUBE_PS1_SUFFIX}%{$reset_color%}"
 }
 
+gcloud_prompt_info () {
+        [[ $GAIA_THEME_GCP_SHOW == false ]] && return # Security trigger to save CPU time
+        [[ -f "$GCP_PS1_BINARY" ]] || return
+        #workspace
+        GCP_PS1_CONFIGURATION=$(${GCP_PS1_BINARY} config configurations list --filter 'is_active=true' --format="value(name)" 2>/dev/null)
+        echo "${GCP_PS1_PREFIX}${GCP_PS1_CONFIGURATION}${GCP_PS1_SUFFIX}%{$reset_color%}"
+}
+
+tf_prompt_info () {
+        [[ $GAIA_THEME_TF_SHOW == false ]] && return # Security trigger to save CPU time
+        [[ -f "$TF_PS1_BINARY" ]] || return
+        #workspace
+        TF_PS1_WORKSPACE=$(${TF_PS1_BINARY} workspace show 2>/dev/null)
+        echo "${TF_PS1_PREFIX}${TF_PS1_WORKSPACE}${TF_PS1_SUFFIX}%{$reset_color%}"
+}
+
 nvm_prompt_info () {
         [[ -f "$NVM_DIR/nvm.sh" ]] || return
         local nvm_prompt
@@ -150,6 +180,16 @@ gaia_k8s_prompt() {
 gaia_k8s_aliases() {
   alias kubeon='GAIA_THEME_K8S_SHOW=true'
   alias kubeoff='GAIA_THEME_K8S_SHOW=false'
+}
+
+gaia_tf_prompt() {
+  [[ $GAIA_THEME_TF_SHOW == false ]] && return
+  echo -n "$(tf_prompt_info)"
+}
+
+gaia_gcp_prompt() {
+  [[ $GAIA_THEME_GCP_SHOW == false ]] && return
+  echo -n "$(gcloud_prompt_info)"
 }
 
 gaia_nvm_prompt() {
@@ -225,8 +265,7 @@ gaia_k8s_aliases
 
 setopt prompt_subst
 PROMPT='> $_LIBERTY '
-RPROMPT='$(gaia_k8s_prompt)$(gaia_java_prompt)$(gaia_nvm_prompt)$(gaia_venv_prompt)$(gaia_ruby_prompt)$(gaia_git_prompt)%{$reset_color%}'
-
+RPROMPT='$(gaia_k8s_prompt)$(gaia_tf_prompt)$(gaia_gcp_prompt)$(gaia_java_prompt)$(gaia_nvm_prompt)$(gaia_venv_prompt)$(gaia_ruby_prompt)$(gaia_git_prompt)%{$reset_color%}'
 
 autoload -U add-zsh-hook
 add-zsh-hook precmd gaia_precmd
