@@ -3,8 +3,10 @@
 A ZSH theme inspired by [bureau](https://github.com/isqua/bureau) & [bureau-env](https://github.com/angus-lherrou/bureau-env) but going further on environment integration, that's why this name.
 
 Using Gaia you will have always in front of your eyes:
-* Python virtualenv active
 * Kubernetes active cluster and namespace
+* Terraform active workspace
+* Google Cloud active configuration
+* Python virtualenv active
 * Ruby version and environment
 * Java version 
 * Ruby version
@@ -30,9 +32,13 @@ Of course git status fully integrated too
 - GAIA_THEME_VENV_SHOW=true|false to enable display/hide Python virtualenv active environment
 - GAIA_THEME_RUBY_SHOW=true|false to enable display/hide ruby active version
 - GAIA_THEME_K8S_SHOW=true|false to enable display/hide Kubernetes active cluster and namespace (kubectx nd kubenv required)
+- GAIA_THEME_TF_SHOW=true|false to enable display/hide Terraform active workspace. Logo of Terraform not yet at Hack Fonts so we will use a bridge
+- GAIA_THEME_GCP_SHOW=true|false to enable display/hide Google Cloud active configuration. Use 'gcloud config ocnfigurations' to get more details
+
 
 Extras:
 - KUBE_PS1_BINARY will be used to target kubectl location. Defaults to /usr/bin/kubectl
+- GCP_PS1_BINARY will be used to target gcloud location. Defaults to /usr/bin/gcloud
 - Use command kubeon and kubeoff to enable disable Kuvbernetes prompt integration. This is useful when your k8s cluster is slow or timing out which will impact your shell performance.
 
 ---
