@@ -50,7 +50,7 @@ GCP_PS1_SUFFIX=" "
 ### Terraform
 GAIA_THEME_TF_SHOW="${GAIA_THEME_TF_SHOW:-false}"
 TF_PS1_BINARY="${TF_PS1_BINARY:-/usr/local/bin/terraform}"
-TF_PS1_PREFIX="%{$fg_no_bold[cyan]%}🏗 %{$fg_no_bold[cyan]%}"
+TF_PS1_PREFIX="%{$fg_no_bold[cyan]%}🏭︎ %{$fg_no_bold[cyan]%}"
 TF_PS1_SUFFIX=" "
 
 ### Git [±master ▾●]
