@@ -32,7 +32,7 @@ Of course git status fully integrated too
 - GAIA_THEME_VENV_SHOW=true|false to enable display/hide Python virtualenv active environment
 - GAIA_THEME_RUBY_SHOW=true|false to enable display/hide ruby active version
 - GAIA_THEME_K8S_SHOW=true|false to enable display/hide Kubernetes active cluster and namespace (kubectx nd kubenv required)
-- GAIA_THEME_TF_SHOW=true|false to enable display/hide Terraform active workspace. Logo of Terraform not yet at Hack Fonts so we will use a bridge
+- GAIA_THEME_TF_SHOW=true|false to enable display/hide Terraform active workspace
 - GAIA_THEME_GCP_SHOW=true|false to enable display/hide Google Cloud active configuration. Use 'gcloud config ocnfigurations' to get more details
 
 
