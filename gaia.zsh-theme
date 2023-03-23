@@ -21,7 +21,7 @@ ZSH_THEME_NVM_PROMPT_SUFFIX=" "
 
 ### JAVA version
 GAIA_THEME_JAVA_SHOW="${GAIA_THEME_JAVA_SHOW:-false}"
-GAIA_THEME_JAVA_BINARY="/usr/bin/java"
+GAIA_THEME_JAVA_BINARY=$(which java)
 GAIA_THEME_JAVA_PROMPT_PREFIX="%{$fg_no_bold[white]%}\ue256 %{$fg_no_bold[white]%}"
 GAIA_THEME_JAVA_PROMPT_SUFFIX=" "
 
